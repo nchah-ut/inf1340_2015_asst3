@@ -5,9 +5,9 @@
 This module performs table operations on database tables
 implemented as lists of lists. """
 
-__author__ = 'Susan Sim'
-__email__ = "ses@drsusansim.org"
-__copyright__ = "2015 Susan Sim"
+__author__ = "Kei'ichiro Yamamoto, Albert Tai, Niel Chah"
+__email__ = "keiichiro.yamamoto@mail.utoronto.ca, albert.tai@mail.utoronto.ca, niel.chah@mail.utoronto.ca"
+__copyright__ = "2015 Kei'ichiro Yamamoto, Albert Tai, Niel Chah"
 __license__ = "MIT License"
 
 
