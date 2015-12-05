@@ -20,6 +20,32 @@ import json
 ######################
 REQUIRED_FIELDS = ["passport", "first_name", "last_name",
                    "birth_date", "home", "entry_reason", "from"]
+ADDITIONAL_FIELDS = ["visa_location", "visa"]
+
+# Sample Valid Visa
+valid_visa = [
+  {
+    "passport": "FWO9A-B8MDF-TGXW5-H49SO-HI5VE",
+    "first_name": "VICKI",
+    "last_name": "NOYES",
+    "birth_date": "1969-12-11",
+    "home": {
+      "city": "a",
+      "region": "a",
+      "country": "III"
+    },
+    "entry_reason": "visit",
+    "visa": {
+      "date": "2012-12-31",
+      "code": "CFR6X-XSMVA"
+    },
+    "from": {
+      "city": "a",
+      "region": "a",
+      "country": "JIK"
+    }
+  }
+]
 
 ######################
 ## global variables ##
@@ -65,17 +91,38 @@ def decide(input_file, countries_file):
     :return: List of strings. Possible values of strings are:
         "Accept", "Reject", and "Quarantine"
     """
+    """
+    Rules for categorizing travellers:
+    1. If the required information for an entry record is incomplete, the traveller must be rejected.
+    2. If any location mentioned in the entry record is unknown, the traveller must be rejected.
+    3. If the traveller's home country is Kanadia (country code: KAN), the traveller will be accepted.
+    4. If the reason for entry is to visit and the visitor has a passport from a country from which a
+    visitor visa is required, the traveller must have a valid visa. A valid visa is one that is less than
+    two years old.
+    5. If the traveller is coming from or travelling through a country with a medical advisory, she or he
+    must be sent to quarantine.
+    * It is possible for a traveller to receive more than one distinct immigration decisions. Conflicts should
+    be resolved according the order of priority for the immigration decisions: quarantine, reject, and accept.
+    """
 
     return ["Reject"]
 
 
 def valid_passport_format(passport_number):
     """
-    Checks whether a pasport number is five sets of five alpha-number characters separated by dashes
+    Checks whether a passport number is five sets of five alpha-number characters separated by dashes
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
     """
-    return False
+    # passport_number matching is case-insensitive as per assignment outline
+    passport_regex = re.compile('\w\w\w\w\w-\w\w\w\w\w-\w\w\w\w\w-\w\w\w\w\w-\w\w\w\w\w' , re.IGNORECASE)
+    passport_match = passport_regex.match(passport_number)
+
+    # A proper passport_number is only 29 chars and should trigger False, otherwise RE matching would work
+    if len(passport_number) > 29 or passport_match is None:
+        return False
+    else:
+        return True
 
 
 def valid_visa_format(visa_code):
@@ -83,8 +130,16 @@ def valid_visa_format(visa_code):
     Checks whether a visa code is two groups of five alphanumeric characters
     :param visa_code: alphanumeric string
     :return: Boolean; True if the format is valid, False otherwise
-
     """
+    # Regex matching is case-insensitive as per assignment outline
+    visa_regex = re.compile('\w\w\w\w\w-\w\w\w\w\w', re.IGNORECASE)
+    visa_match = visa_regex.match(visa_code)
+
+    # A proper visa_code is only 11 chars and should trigger False, otherwise RE matching would work
+    if len(visa_code) > 11 or visa_match is None:
+        return False
+    else:
+        return True
 
 
 def valid_date_format(date_string):
