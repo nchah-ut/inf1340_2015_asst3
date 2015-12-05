@@ -118,7 +118,7 @@ def valid_passport_format(passport_number):
     passport_regex = re.compile('\w\w\w\w\w-\w\w\w\w\w-\w\w\w\w\w-\w\w\w\w\w-\w\w\w\w\w' , re.IGNORECASE)
     passport_match = passport_regex.match(passport_number)
 
-    # A proper passport_number is only 29 chars and should trigger False, otherwise RE matching would work
+    # A proper passport_number is only 29 chars, otherwise RE matching would work when it should be False
     if len(passport_number) > 29 or passport_match is None:
         return False
     else:
@@ -135,7 +135,7 @@ def valid_visa_format(visa_code):
     visa_regex = re.compile('\w\w\w\w\w-\w\w\w\w\w', re.IGNORECASE)
     visa_match = visa_regex.match(visa_code)
 
-    # A proper visa_code is only 11 chars and should trigger False, otherwise RE matching would work
+    # A proper visa_code is only 11 chars, otherwise RE matching would work when it should be False
     if len(visa_code) > 11 or visa_match is None:
         return False
     else:
@@ -148,5 +148,15 @@ def valid_date_format(date_string):
     :param date_string: date to be checked
     :return: Boolean True if the format is valid, False otherwise
     """
+    date_regex = re.compile('\d\d\d\d-[0-1]\d-[0-3]\d')
+    date_match = date_regex.match(date_string)
 
-    return False
+    # A proper date time is only 10 chars, otherwise RE matching would work when it should be False
+    # Checking for valid MM and DD values - a more comprehensive MM-DD check requires more code
+    if (len(date_string) > 10
+            or date_match is None
+            or int(date_string[5:7]) > 12
+            or int(date_string[8:10]) > 31):  # legal under https://www.python.org/dev/peps/pep-0008/#indentation
+        return False
+    else:
+        return True
