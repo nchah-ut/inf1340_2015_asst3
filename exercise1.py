@@ -15,15 +15,15 @@ __license__ = "MIT License"
 # HELPER FUNCTIONS ##
 #####################
 
-def remove_duplicates(l):
+def remove_duplicates(listoflists):
     """
-    Removes duplicates from l, where l is a List of Lists.
-    :param l: a List
+    This function removes duplicates from l, where l is a List of Lists.
+    :param listoflists: a List
     """
 
     d = {}
     result = []
-    for row in l:
+    for row in listoflists:
         if tuple(row) not in d:
             result.append(row)
             d[tuple(row)] = True
@@ -53,10 +53,10 @@ def selection(t, f):
 
     """
 
-    return []
+    return None
 
 
-def projection(t, r):
+def projection(table, attributes):
     """
     Perform projection operation on table t
     using the attributes subset r.
@@ -68,9 +68,6 @@ def projection(t, r):
 
     """
 
-    return []
-
-
 def cross_product(t1, t2):
     """
     Return the cross-product of tables t1 and t2.
@@ -79,9 +76,35 @@ def cross_product(t1, t2):
     > R1 = [["A", "B"], [1,2], [3,4]]
     > R2 = [["C", "D"], [5,6]]
     [["A", "B", "C", "D"], [1, 2, 5, 6], [3, 4, 5, 6]]
+    :param t1: First table that will be cross producted
+    :param t2: Second table that will be matched to table 1
 
+    :return: None if empty or list with result
 
     """
+    result = [] # initalize result table
+    if (t1 == [] or t2 == []):
+        return None
+    result += [t1[0] + t2[0]] # add the column titles together of table 1 and 2
+    t1counter = 1 # counter for table 1
+    for row in t1[0:-1]: # Retrieve each row of table1 starting from after column labels
+        t2counter = 1 # counter for table 2
+        for row in t2[0:-1]: # Retrieve each row of table2 starting from after column labels
+            result += [t1[t1counter] + t2[t2counter]] # add it to the result table
+            t2counter += 1 # increment the counter for table 2
+        t1counter += 1 # increment the counter for table 1
+    if (result != []):
+        return result
+    return None
 
-    return []
+def filter_employees(row):
+    """
+    Check if employee represented by row
+    is AT LEAST 30 years old and makes
+    MORE THAN 3500.
+    :param row: A List in the format:
+    [{Surname}, {FirstName}, {Age}, {Salary}]
+    :return: True if the row satisfies the condition.
+    """
+    return row[-2] >= 30 and row[-1] > 3500
 
