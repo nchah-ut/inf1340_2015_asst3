@@ -11,6 +11,8 @@ __email__ = "keiichiro.yamamoto@mail.utoronto.ca, albert.tai@mail.utoronto.ca, n
 __copyright__ = "2015 Kei'ichiro Yamamoto, Albert Tai, Niel Chah"
 __license__ = "MIT License"
 
+#IMPORTS
+import pytest
 from exercise1 import selection, projection, cross_product
 
 
@@ -104,3 +106,10 @@ def test_cross_product():
               ["White", "production", "sales", "Brown"]]
 
     assert is_equal(result, cross_product(R1, R2))
+
+def test_filter_employees():
+	"""
+	Tests filter EMPLOYEES
+	"""
+
+	
