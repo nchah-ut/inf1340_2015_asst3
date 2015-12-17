@@ -52,6 +52,42 @@ def selection(t, f):
     [["A", "B", "C"], [4, 5, 6]]
 
     """
+    selection_list =[]
+    selection_list.append(t[0])
+    for row in t[1:]:
+        if f(row) is True:
+            selection_list.append(row)
+    if len(selection_list) == 1:
+        return None
+    else:
+        return selection_list
+
+
+    # takes the header for t
+    # applies f to each row in t
+    # takes the f(row) that returns true and attaches that to a new table
+    # returns the new table
+    # if f(row) does not return True, does not return a table / returns None?
+    """
+    Perform select operation on table t that satisfy condition f.
+
+    param: t (table 1/a list of lists), function (operates on data rows of t1)
+    raises:
+    output: table that contains rows that meet criteria of function
+    assumptions: the output of the function that is being passed in is a Boolean (T/F)
+
+
+    Note: This can be ANY function, so long as it
+    You can use the function in the description for testing.
+
+    Example:
+    R = [["A", "B", "C"], [1, 2, 3], [4, 5, 6]]
+    # Define function f that returns True if the last element in the row is greater than 3.
+    def f(row): row[-1] > 3
+    select(R, f)
+    [["A", "B", "C"], [4, 5, 6]]
+
+    """
 
     return None
 
@@ -67,6 +103,22 @@ def projection(table, attributes):
     [["A", "C"], [1, 3], [4, 6]]
 
     """
+
+    result = []
+    for item in attributes:
+        if item in table[0]:
+            column_number = table[0].index(item) # find the attributes title in table
+        else:
+            raise UnknownAttributeException(item + " cannot be found in table") # raise exception if column not in table
+        counter = 0 # start a counter
+        for row in table: # cycle through the rows in table
+            if attributes.index(item) == 0:
+                result.append([row[column_number]])
+            elif attributes.index(item) > 0:
+                result[counter].append(row[column_number])
+                counter += 1 # increment the counter
+    return result
+
 
 def cross_product(t1, t2):
     """
@@ -108,3 +160,9 @@ def filter_employees(row):
     """
     return row[-2] >= 30 and row[-1] > 3500
 
+EMPLOYEES = [["Surname", "FirstName", "Age", "Salary"],
+             ["Smith", "Mary", 25, 2000],
+             ["Black", "Lucy", 40, 3000],
+             ["Verdi", "Nico", 36, 4500],
+             ["Smith", "Mark", 40, 3900]]
+print(projection(EMPLOYEES, ["Surname", "Age", "FirstName"]))
