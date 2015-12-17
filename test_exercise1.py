@@ -77,6 +77,20 @@ def test_selection():
 
     assert is_equal(result, selection(EMPLOYEES, filter_employees))
 
+def test_selection_empty_table():
+    """
+    Test select operation with empty table
+    """
+    assert selection([], filter_employees) == None
+
+def test_selection_result_empty():
+    """
+    Test select operation result with empty table
+    """
+    def returnNone(row):
+        return row[-1] < -1
+    assert selection(EMPLOYEES, returnNone) == None
+
 
 def test_projection():
     """
