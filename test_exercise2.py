@@ -37,7 +37,8 @@ def test_further_cases():
     2. Traveller 2 = Reject because Rule 1. traveller's birth date record is invalid 1936-13-25
     3. Traveller 3 = Reject because Rule 1. traveller's passport information is not included
     4. Traveller 4 = Reject because Rule 2. traveller is from an unknown country
-    5. Traveller 5 = Accept
+    5. Traveller 5 = Reject because Rule 4. traveller visa is out of date
+    6. Traveller 6 = Reject because Rule 4. traveller has an invalid Visa number
     """
     assert decide("exercise2_further_tests.json", "countries.json") == \
            ["Reject", "Reject", "Reject", "Reject", "Accept"]
