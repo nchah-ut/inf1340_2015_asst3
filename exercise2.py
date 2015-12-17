@@ -79,35 +79,6 @@ def is_more_than_x_years_ago(x, date_string):
     return (date - x_years_ago).total_seconds() < 0
 
 
-def decide(input_file, countries_file):
-    """
-    Decides whether a traveller's entry into Kanadia should be accepted
-
-    :param input_file: The name of a JSON formatted file that contains
-        cases to decide
-    :param countries_file: The name of a JSON formatted file that contains
-        country data, such as whether an entry or transit visa is required,
-        and whether there is currently a medical advisory
-    :return: List of strings. Possible values of strings are:
-        "Accept", "Reject", and "Quarantine"
-    """
-    """
-    Rules for categorizing travellers:
-    1. If the required information for an entry record is incomplete, the traveller must be rejected.
-    2. If any location mentioned in the entry record is unknown, the traveller must be rejected.
-    3. If the traveller's home country is Kanadia (country code: KAN), the traveller will be accepted.
-    4. If the reason for entry is to visit and the visitor has a passport from a country from which a
-    visitor visa is required, the traveller must have a valid visa. A valid visa is one that is less than
-    two years old.
-    5. If the traveller is coming from or travelling through a country with a medical advisory, she or he
-    must be sent to quarantine.
-    * It is possible for a traveller to receive more than one distinct immigration decisions. Conflicts should
-    be resolved according the order of priority for the immigration decisions: quarantine, reject, and accept.
-    """
-
-    return ["Reject"]
-
-
 def valid_passport_format(passport_number):
     """
     Checks whether a passport number is five sets of five alpha-number characters separated by dashes
@@ -160,3 +131,81 @@ def valid_date_format(date_string):
         return False
     else:
         return True
+
+
+def decide(input_file, countries_file):
+    """
+    Decides whether a traveller's entry into Kanadia should be accepted
+
+    :param input_file: The name of a JSON formatted file that contains
+        cases to decide
+    :param countries_file: The name of a JSON formatted file that contains
+        country data, such as whether an entry or transit visa is required,
+        and whether there is currently a medical advisory
+    :return: List of strings. Possible values of strings are:
+        "Accept", "Reject", and "Quarantine"
+    """
+    """
+    Rules for categorizing travellers:
+    1. If the required information for an entry record is incomplete, the traveller must be rejected.
+    2. If any location mentioned in the entry record is unknown, the traveller must be rejected.
+    3. If the traveller's home country is Kanadia (country code: KAN), the traveller will be accepted.
+    4. If the reason for entry is to visit and the visitor has a passport from a country from which a
+    visitor visa is required, the traveller must have a valid visa. A valid visa is one that is less than
+    two years old.
+    5. If the traveller is coming from or travelling through a country with a medical advisory, she or he
+    must be sent to quarantine.
+    * It is possible for a traveller to receive more than one distinct immigration decisions. Conflicts should
+    be resolved according the order of priority for the immigration decisions: quarantine, reject, and accept.
+    """
+    input_raw = open(input_file, "r").read()
+    input_json = json.loads(input_raw)
+
+    countries_raw = open(countries_file, "r").read()
+    countries_json = json.loads(countries_raw)
+
+    known_countries = [country for country in countries_json]  # Get list of 12 known countries
+    known_countries.append("KAN")  # KAN is not in the list but as the home country should be
+    known_countries = json.dumps(known_countries)
+
+    # Incomplete information
+    decisions_list = []
+    for traveller in input_json:
+        # decisions_list.append(traveller["first_name"])
+
+        # Rule 1: If required information for entry record incomplete, traveller is rejected
+        completeness_checklist = []
+        try:
+            completeness_checklist.append(len(traveller["first_name"]))
+            completeness_checklist.append(traveller["last_name"])
+            if valid_date_format(traveller["birth_date"]) == False:
+                decisions_list.append("Reject")
+
+            if valid_passport_format(traveller["passport"]) == False:
+                decisions_list.append("Reject")
+
+            completeness_checklist.append(traveller["home"]["country"])
+            completeness_checklist.append(traveller["from"]["country"])
+            completeness_checklist.append(traveller["entry_reason"])
+            if 0 in completeness_checklist:
+                decisions_list.append("Reject")
+
+        except KeyError:
+            decisions_list.append("Reject")
+            break
+
+        # Rule 2: If any unknown location noted, traveller is rejected
+        if traveller["home"]["country"] not in known_countries or traveller["from"]["country"] not in known_countries:
+            decisions_list.append("Reject")
+
+
+        # Rule 3: If home country is KAN, traveller is accepted
+        if traveller["home"]["country"] == "KAN":
+            decisions_list.append("Accept")
+
+
+    return decisions_list
+
+print decide("test_jsons/test_returning_citizen.json", "countries.json")
+
+# print valid_visa_format("CFR6X-XSMVA")
