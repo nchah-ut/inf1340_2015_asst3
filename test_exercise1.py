@@ -77,11 +77,13 @@ def test_selection():
 
     assert is_equal(result, selection(EMPLOYEES, filter_employees))
 
+
 def test_selection_empty_table():
     """
     Test select operation with empty table
     """
     assert selection([], filter_employees) == None
+
 
 def test_selection_result_empty():
     """
@@ -137,6 +139,7 @@ def test_projection_wrong_attributes():
     except UnknownAttributeException:
         return True
 
+
 def test_cross_product():
     """
     Test cross product operation.
@@ -151,6 +154,7 @@ def test_cross_product():
               ["White", "production", "sales", "Brown"]]
 
     assert is_equal(result, cross_product(R1, R2))
+
 
 def test_cross_product_result_empty():
     """
