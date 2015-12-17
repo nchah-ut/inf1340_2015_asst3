@@ -91,6 +91,7 @@ def test_projection():
 
     assert is_equal(result, projection(EMPLOYEES, ["Surname", "FirstName"]))
 
+
 def test_projection_empty_attributes():
     """
     Test projection operation.
@@ -105,6 +106,8 @@ def test_projection_empty_attributes():
         assert is_equal(result, projection(EMPLOYEES, []))
     except UnknownAttributeException:
         return True
+
+
 def test_projection_wrong_attributes():
     """
     Test projection operation.
@@ -119,6 +122,8 @@ def test_projection_wrong_attributes():
         assert is_equal(result, projection(EMPLOYEES, ["fat guy"]))
     except UnknownAttributeException:
         return True
+
+
 def test_cross_product():
     """
     Test cross product operation.
@@ -134,9 +139,3 @@ def test_cross_product():
 
     assert is_equal(result, cross_product(R1, R2))
 
-def test_filter_employees():
-	"""
-	Tests filter EMPLOYEES
-	"""
-
-	
