@@ -134,17 +134,17 @@ def cross_product(t1, t2):
     :return: None if empty or list with result
 
     """
-    result = [] # initalize result table
+    result = []  # initialize result table
     if (t1 == [] or t2 == []):
         return None
-    result += [t1[0] + t2[0]] # add the column titles together of table 1 and 2
-    t1counter = 1 # counter for table 1
-    for row in t1[0:-1]: # Retrieve each row of table1 starting from after column labels
-        t2counter = 1 # counter for table 2
-        for row in t2[0:-1]: # Retrieve each row of table2 starting from after column labels
-            result += [t1[t1counter] + t2[t2counter]] # add it to the result table
-            t2counter += 1 # increment the counter for table 2
-        t1counter += 1 # increment the counter for table 1
+    result += [t1[0] + t2[0]]  # add the column titles together of table 1 and 2
+    t1counter = 1  # counter for table 1
+    for row in t1[0:-1]:  # Retrieve each row of table1 starting from after column labels
+        t2counter = 1  # counter for table 2
+        for row in t2[0:-1]:  # Retrieve each row of table2 starting from after column labels
+            result += [t1[t1counter] + t2[t2counter]]  # add it to the result table
+            t2counter += 1  # increment the counter for table 2
+        t1counter += 1  # increment the counter for table 1
     if (result != []):
         return result
     return None
