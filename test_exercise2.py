@@ -19,7 +19,7 @@ if os.name == 'nt':
 else:
     DIR = "test_jsons/"  # other (unix)
 
-# DIR = "test_jsons/"
+DIR = "test_jsons/"
 os.chdir(DIR)
 
 
