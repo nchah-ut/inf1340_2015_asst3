@@ -220,6 +220,7 @@ def decide(input_file, countries_file):
                 and traveller["from"]["country"] in visa_countries \
                 and not is_more_than_x_years_ago(2, traveller["visa"]["date"]):
             traveller_decision.append("Accept")
+
         if traveller["entry_reason"] == "visit" \
                 and traveller["from"]["country"] in visa_countries \
                 and is_more_than_x_years_ago(2, traveller["visa"]["date"]):
@@ -231,7 +232,7 @@ def decide(input_file, countries_file):
 
 
         # Aggregate the decisions made across the different rules and apply priority rules
-        print traveller_decision
+        # print traveller_decision  # for debugging
         if "Quarantine" in traveller_decision and "Reject" not in traveller_decision:
             final_decision = "Quarantine"
         elif "Reject" in traveller_decision:
