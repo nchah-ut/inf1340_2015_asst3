@@ -39,7 +39,7 @@ class UnknownAttributeException(Exception):
     pass
 
 
-def selection(t, f):
+def selection(table1, function):
     """
     Perform select operation on table t that satisfy condition f.
 
@@ -51,11 +51,22 @@ def selection(t, f):
     > select(R, f)
     [["A", "B", "C"], [4, 5, 6]]
 
+    :param table1: this is the table that the function operate on
+    :param function: this is a function that operates on the table
+
+    :return: None if empty result(only has title row) or list
     """
-
-
-    return None
-
+    result = []
+    if not table1:  # check if table 1 is empty if so return none
+        return None
+    result.append(table1[0])  # append the title row
+    for row in table1[1:]:  # cycle through everything except title row
+        if function(row):   # check if function wants the row
+            result.append(row)  # if so append it
+    if len(table1) == 1:  # return None if only has title row
+        return None
+    else:
+        return table1  # return table
 
 def projection(table, attributes):
     """
