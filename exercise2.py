@@ -231,7 +231,7 @@ def decide(input_file, countries_file):
 
 
         # Aggregate the decisions made across the different rules and apply priority rules
-        print traveller_decision
+        # print traveller_decision  # for debugging
         if "Quarantine" in traveller_decision and "Reject" not in traveller_decision:
             final_decision = "Quarantine"
         elif "Reject" in traveller_decision:
@@ -243,5 +243,5 @@ def decide(input_file, countries_file):
 
     return decision_list
 
-print decide("test_jsons/exercise2_further_tests.json", "countries.json")
+# print decide("test_jsons/exercise2_further_tests.json", "countries.json")
 # print decide("valid_visa_example.json", "countries.json")

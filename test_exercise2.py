@@ -35,10 +35,10 @@ def test_further_cases():
     1. Traveller 1 = Reject because Rule 1. traveller's record is incomplete or malformed
     2. Traveller 2 = Reject because Rule 1. traveller's birth date record is invalid 1936-13-25
     3. Traveller 3 = Reject because Rule 1. traveller's passport information is not included
-    4. Traveller 4 =
+    4. Traveller 4 = Reject because Rule 2. traveller is from an unknown country
     """
     assert decide("exercise2_further_tests.json", "countries.json") == \
-        ["Reject", "Reject", "Reject", ""]
+        ["Reject", "Reject", "Reject", "Reject"]
 
 
 def test_correct_date_format():
@@ -72,5 +72,21 @@ def test_correct_visa_format():
 
     try:
         assert valid_visa_format(99999-9999)
+    except TypeError:
+        return True
+
+
+def test_correct_passport_format():
+    """
+    Test to see if the passport is accepted
+    """
+
+    try:
+        assert valid_passport_format("I7LWE-N5O9P-HDNAG-1JGF1-WR44S")
+    except True:
+        return True
+
+    try:
+        assert valid_visa_format("I7LWE-N5O9P-HDNAG-1JGF1")
     except TypeError:
         return True
