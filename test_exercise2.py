@@ -114,10 +114,9 @@ def test_correct_date_format():
     except True:
         return True
 
-    try:
-        assert valid_date_format("2012-30-40")
-    except False:
-        return True
+
+    assert valid_date_format("2012-30-40") == False
+
 
     try:
         assert valid_date_format(2015 - 02 - 22)
