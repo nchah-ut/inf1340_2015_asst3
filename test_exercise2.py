@@ -41,7 +41,7 @@ def test_further_cases():
     6. Traveller 6 = Reject because Rule 4. traveller has an invalid Visa number
     """
     assert decide("exercise2_further_tests.json", "countries.json") == \
-           ["Reject", "Reject", "Reject", "Reject", "Accept"]
+           ["Reject", "Reject", "Reject", "Reject", "Reject", "Reject"]
 
 
 def test_x_years_ago():
