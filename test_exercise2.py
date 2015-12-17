@@ -88,11 +88,7 @@ def test_valid_visa_format():
     """
     Test to see if the visa is accepted
     """
-
-    try:
-        assert valid_visa_format("CKC6X-XSMVA")
-    except True:
-        return True
+    assert valid_visa_format("CKC6X-XSMVA") == True
 
     try:
         assert valid_visa_format(99999 - 9999)
@@ -109,14 +105,9 @@ def test_correct_date_format():
     """
     Test to see if different dates are accepted.
     """
-    try:
-        assert valid_date_format("2015-02-22")
-    except True:
-        return True
-
+    assert valid_date_format("2015-02-22") == True
 
     assert valid_date_format("2012-30-40") == False
-
 
     try:
         assert valid_date_format(2015 - 02 - 22)
@@ -128,11 +119,7 @@ def test_correct_visa_format():
     """
     Test to see if the visa is accepted
     """
-
-    try:
-        assert valid_visa_format("CFR6X-XSMVA")
-    except True:
-        return True
+    assert valid_visa_format("CFR6X-XSMVA") == True
 
     try:
         assert valid_visa_format(99999 - 9999)
