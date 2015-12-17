@@ -63,10 +63,11 @@ def selection(table1, function):
     for row in table1[1:]:  # cycle through everything except title row
         if function(row):   # check if function wants the row
             result.append(row)  # if so append it
-    if len(table1) == 1:  # return None if only has title row
+    if len(result) == 1:  # return None if only has title row
         return None
     else:
-        return table1  # return table
+        return result  # return table
+
 
 def projection(table, attributes):
     """
@@ -135,6 +136,7 @@ def cross_product(t1, t2):
     if not result:  # if the result is empty
         return None
     return result
+
 
 def filter_employees(row):
     """
