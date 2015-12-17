@@ -45,8 +45,8 @@ def test_further_cases():
 
 def test_x_years_ago():
     """
-	Check if if inputs are valid for x years ago
-	"""
+    Check if if inputs are valid for x years ago
+    """
     try:
         assert is_more_than_x_years_ago(3, "2012-02-27")
     except True:
@@ -65,8 +65,8 @@ def test_x_years_ago():
 
 def test_valid_passport_format():
     """
-	Tests to see if Invalid formats are accepted
-	"""
+    Tests to see if Invalid formats are accepted
+    """
     try:
         assert valid_passport_format("FWO9A-B8MDF-TGXW5-H49SO-HI5VE")
     except True:
@@ -85,8 +85,8 @@ def test_valid_passport_format():
 
 def test_valid_visa_format():
     """
-	Test to see if the visa is accepted
-	"""
+    Test to see if the visa is accepted
+    """
 
     try:
         assert valid_visa_format("CKC6X-XSMVA")
