@@ -137,7 +137,6 @@ def test_projection_wrong_attributes():
     except UnknownAttributeException:
         return True
 
-
 def test_cross_product():
     """
     Test cross product operation.
@@ -153,3 +152,16 @@ def test_cross_product():
 
     assert is_equal(result, cross_product(R1, R2))
 
+def test_cross_product_result_empty():
+    """
+    Test cross product operation with a result empty table.
+    """
+
+    t1 = [["Surname", "FirstName"],
+              ["Smith", "Mary"],
+              ["Black", "Lucy"],
+              ["Verdi", "Nico"],
+              ["Smith", "Mark"]]
+    t2 = [["Surname", "FirstName"]]
+
+    assert cross_product(t1,t2) == None

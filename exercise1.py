@@ -125,6 +125,8 @@ def cross_product(t1, t2):
     result = []  # initialize result table
     if not t1 or not t2:  # check if either tables are empty
         return None
+    if len(t2) == 1:  # check if table 2 only has title row
+        return None
     result += [t1[0] + t2[0]]  # add the column titles together of table 1 and 2
     t1counter = 1  # counter for table 1
     for row in t1[0:-1]:  # Retrieve each row of table1 starting from after column labels
