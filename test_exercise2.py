@@ -15,9 +15,9 @@ import os
 from exercise2 import decide, is_more_than_x_years_ago, valid_passport_format, valid_visa_format, valid_date_format
 
 if os.name == 'nt':
-    DIR = "test_json\\" # Windows
+    DIR = "test_json\\"  # Windows
 else:
-    DIR = "test_jsons/" # other (unix)
+    DIR = "test_jsons/"  # other (unix)
 
 # DIR = "test_jsons/"
 os.chdir(DIR)
@@ -28,7 +28,8 @@ def test_returning():
     Travellers are returning to KAN.
     """
     assert decide("test_returning_citizen.json", "countries.json") == \
-        ["Accept", "Accept", "Quarantine"]
+           ["Accept", "Accept", "Quarantine"]
+
 
 def test_further_cases():
     """
@@ -36,9 +37,71 @@ def test_further_cases():
     2. Traveller 2 = Reject because Rule 1. traveller's birth date record is invalid 1936-13-25
     3. Traveller 3 = Reject because Rule 1. traveller's passport information is not included
     4. Traveller 4 = Reject because Rule 2. traveller is from an unknown country
+    5. Traveller 5 = Accept
     """
     assert decide("exercise2_further_tests.json", "countries.json") == \
-        ["Reject", "Reject", "Reject", "Reject"]
+           ["Reject", "Reject", "Reject", "Reject", "Accept"]
+
+
+def test_x_years_ago():
+    """
+	Check if if inputs are valid for x years ago
+	"""
+    try:
+        assert is_more_than_x_years_ago(3, "2012-02-27")
+    except True:
+        return True
+
+    try:
+        assert is_more_than_x_years_ago(4, 2015 - 05 - 28)
+    except TypeError:
+        return True
+
+    try:
+        assert is_more_than_x_years_ago(3, "2019-02-27")
+    except AssertionError:
+        return True
+
+
+def test_valid_passport_format():
+    """
+	Tests to see if Invalid formats are accepted
+	"""
+    try:
+        assert valid_passport_format("FWO9A-B8MDF-TGXW5-H49SO-HI5VE")
+    except True:
+        return True
+
+    try:
+        assert valid_passport_format(9083 - 9876 - 4659 - 3845 - 9345 - 3845)
+    except TypeError:
+        return True
+
+    try:
+        assert valid_passport_format("asdfadsf")
+    except AssertionError:
+        return True
+
+
+def test_valid_visa_format():
+    """
+	Test to see if the visa is accepted
+	"""
+
+    try:
+        assert valid_visa_format("CKC6X-XSMVA")
+    except True:
+        return True
+
+    try:
+        assert valid_visa_format(99999 - 9999)
+    except TypeError:
+        return True
+
+    try:
+        assert valid_visa_format("nopee-nopee")
+    except AssertionError:
+        return True
 
 
 def test_correct_date_format():
@@ -56,9 +119,10 @@ def test_correct_date_format():
         return True
 
     try:
-        assert valid_date_format(2015-02-22)
+        assert valid_date_format(2015 - 02 - 22)
     except TypeError:
         return True
+
 
 def test_correct_visa_format():
     """
@@ -71,22 +135,6 @@ def test_correct_visa_format():
         return True
 
     try:
-        assert valid_visa_format(99999-9999)
-    except TypeError:
-        return True
-
-
-def test_correct_passport_format():
-    """
-    Test to see if the passport is accepted
-    """
-
-    try:
-        assert valid_passport_format("I7LWE-N5O9P-HDNAG-1JGF1-WR44S")
-    except True:
-        return True
-
-    try:
-        assert valid_visa_format("I7LWE-N5O9P-HDNAG-1JGF1")
+        assert valid_visa_format(99999 - 9999)
     except TypeError:
         return True

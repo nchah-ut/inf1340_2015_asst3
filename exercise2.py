@@ -220,6 +220,7 @@ def decide(input_file, countries_file):
                 and traveller["from"]["country"] in visa_countries \
                 and not is_more_than_x_years_ago(2, traveller["visa"]["date"]):
             traveller_decision.append("Accept")
+
         if traveller["entry_reason"] == "visit" \
                 and traveller["from"]["country"] in visa_countries \
                 and is_more_than_x_years_ago(2, traveller["visa"]["date"]):
@@ -243,5 +244,5 @@ def decide(input_file, countries_file):
 
     return decision_list
 
-# print decide("test_jsons/exercise2_further_tests.json", "countries.json")
+print decide("test_jsons/exercise2_further_tests.json", "countries.json")
 # print decide("valid_visa_example.json", "countries.json")
