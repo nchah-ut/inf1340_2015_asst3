@@ -27,8 +27,19 @@ def test_returning():
     """
     Travellers are returning to KAN.
     """
-    assert decide("test_returning_citizen.json", "countries.json") ==\
+    assert decide("test_returning_citizen.json", "countries.json") == \
         ["Accept", "Accept", "Quarantine"]
+
+def test_further_cases():
+    """
+    1. Traveller 1 = Reject because Rule 1. traveller's record is incomplete or malformed
+    2. Traveller 2 = Reject because Rule 1. traveller's birth date record is invalid 1936-13-25
+    3. Traveller 3 = Reject because Rule 1. traveller's passport information is not included
+    4. Traveller 4 =
+    """
+    assert decide("exercise2_further_tests.json", "countries.json") == \
+        ["Reject", "Reject", "Reject", ""]
+
 
 def test_correct_date_format():
     """

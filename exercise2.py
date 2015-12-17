@@ -165,6 +165,7 @@ def decide(input_file, countries_file):
     countries_raw = open(countries_file, "r").read()
     countries_json = json.loads(countries_raw)
 
+    # List of countries known in the countries.json file
     known_countries = [country for country in countries_json]  # Get list of 12 known countries
     known_countries.append("KAN")  # KAN is not in the list but as the home country should be
     known_countries = json.dumps(known_countries)
@@ -184,15 +185,16 @@ def decide(input_file, countries_file):
     decision_list = []
     for traveller in input_json:
         traveller_decision = []
+        final_decision = []
 
         # Rule 1: If required information for entry record incomplete, traveller is rejected
         completeness_checklist = []
         try:
             completeness_checklist.append(len(traveller["first_name"]))
             completeness_checklist.append(traveller["last_name"])
-            if valid_date_format(traveller["birth_date"]) == False:  # and len(traveller_decision) == 0:
+            if valid_date_format(traveller["birth_date"]) == False:
                 traveller_decision.append("Reject")
-            if valid_passport_format(traveller["passport"]) == False:  # and len(traveller_decision) == 0:
+            if valid_passport_format(traveller["passport"]) == False:
                 traveller_decision.append("Reject")
             completeness_checklist.append(traveller["home"]["country"])
             completeness_checklist.append(traveller["from"]["country"])
@@ -205,11 +207,11 @@ def decide(input_file, countries_file):
 
         # Rule 2: If any unknown location noted, traveller is rejected
         if traveller["home"]["country"] not in known_countries \
-                or traveller["from"]["country"] not in known_countries:  # and len(traveller_decision) == 0:
+                or traveller["from"]["country"] not in known_countries:
             traveller_decision.append("Reject")
 
         # Rule 3: If home country is KAN, traveller is accepted
-        if traveller["home"]["country"] == "KAN":  # and len(traveller_decision) == 0:
+        if traveller["home"]["country"] == "KAN":
             traveller_decision.append("Accept")
 
         # Rule 4: If reason is visit and has passport from country where visa required,
@@ -224,12 +226,13 @@ def decide(input_file, countries_file):
             traveller_decision.append("Reject")
 
         # Rule 5: If coming from or travelling through country with medical advisory, quarantine
-        if traveller["from"]["country"] in quarantine_countries:  # and len(traveller_decision) == 0:
+        if traveller["from"]["country"] in quarantine_countries:
             traveller_decision.append("Quarantine")
 
+
+        # Aggregate the decisions made across the different rules and apply priority rules
         print traveller_decision
-        final_decision = []
-        if "Quarantine" in traveller_decision:
+        if "Quarantine" in traveller_decision and "Reject" not in traveller_decision:
             final_decision = "Quarantine"
         elif "Reject" in traveller_decision:
             final_decision = "Reject"
@@ -240,5 +243,5 @@ def decide(input_file, countries_file):
 
     return decision_list
 
-print decide("test_jsons/test_returning_citizen.json", "countries.json")
-print decide("valid_visa_example.json", "countries.json")
+print decide("test_jsons/exercise2_further_tests.json", "countries.json")
+# print decide("valid_visa_example.json", "countries.json")
