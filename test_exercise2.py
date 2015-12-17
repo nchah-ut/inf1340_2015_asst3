@@ -48,10 +48,7 @@ def test_x_years_ago():
     """
     Check if if inputs are valid for x years ago
     """
-    try:
-        assert is_more_than_x_years_ago(3, "2012-02-27")
-    except True:
-        return True
+    assert is_more_than_x_years_ago(3, "2012-02-27") == True
 
     try:
         assert is_more_than_x_years_ago(4, 2015 - 05 - 28)
@@ -68,10 +65,7 @@ def test_valid_passport_format():
     """
     Tests to see if Invalid formats are accepted
     """
-    try:
-        assert valid_passport_format("FWO9A-B8MDF-TGXW5-H49SO-HI5VE")
-    except True:
-        return True
+    assert valid_passport_format("FWO9A-B8MDF-TGXW5-H49SO-HI5VE") == True
 
     try:
         assert valid_passport_format(9083 - 9876 - 4659 - 3845 - 9345 - 3845)
