@@ -73,23 +73,25 @@ def projection(table, attributes):
     :return: None if empty result or list with just attribute columns from table
     """
 
-    positions_list = [None] * len(attributes)
-    position_counter = 0
-    result = []
-    counter = 0
-    for item in attributes:
-        if item in table[0]:
-            positions_list[position_counter] = table[0].index(item)
-            position_counter += 1
+    positions_list = [None] * len(attributes)  # allocate space for the list of positions
+    position_counter = 0  # start the counter for position list at zero
+    result = []  # initialize the result
+    column_counter = 0  # counter for column header
+    if not attributes:  # checking if the attributes is empty
+        raise UnknownAttributeException("Attributes is empty")
+    for item in attributes:  # cycling through all attributes
+        if item in table[0]:  # check if attribute is in table title
+            positions_list[position_counter] = table[0].index(item)  # store the column row found into position list
+            position_counter += 1  # increment the counter for positions
         else:
-            raise UnknownAttributeException(item + " cannot be found in table") # raise exception if column not in table
-    for row in table:
-        for position in positions_list:
-            if (positions_list.index(position) == 0):
+            raise UnknownAttributeException(item + " cannot be found in table")  # raise exception if cannot be found
+    for row in table:  # cycle through the rows and append positions found
+        for position in positions_list:  # cycle through to find all positions of the attributes
+            if positions_list.index(position) == 0:  # check if first in the column
                 result.append([row[position]])
             else:
-                result[counter].append(row[position])
-        counter+=1
+                result[column_counter].append(row[position])  # otherwise append to the row in result
+        column_counter += 1  # increment the column counter
     return result
 
 
@@ -109,7 +111,7 @@ def cross_product(t1, t2):
 
     """
     result = []  # initialize result table
-    if (t1 == [] or t2 == []):
+    if not t1 or not t2:  # check if either tables are empty
         return None
     result += [t1[0] + t2[0]]  # add the column titles together of table 1 and 2
     t1counter = 1  # counter for table 1
@@ -119,9 +121,9 @@ def cross_product(t1, t2):
             result += [t1[t1counter] + t2[t2counter]]  # add it to the result table
             t2counter += 1  # increment the counter for table 2
         t1counter += 1  # increment the counter for table 1
-    if (result != []):
-        return result
-    return None
+    if not result:  # if the result is empty
+        return None
+    return result
 
 def filter_employees(row):
     """

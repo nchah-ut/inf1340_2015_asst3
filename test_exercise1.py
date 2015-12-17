@@ -13,7 +13,7 @@ __license__ = "MIT License"
 
 #IMPORTS
 import pytest
-from exercise1 import selection, projection, cross_product
+from exercise1 import selection, projection, cross_product, UnknownAttributeException
 
 
 ###########
@@ -91,7 +91,34 @@ def test_projection():
 
     assert is_equal(result, projection(EMPLOYEES, ["Surname", "FirstName"]))
 
+def test_projection_empty_attributes():
+    """
+    Test projection operation.
+    """
 
+    result = [["Surname", "FirstName"],
+              ["Smith", "Mary"],
+              ["Black", "Lucy"],
+              ["Verdi", "Nico"],
+              ["Smith", "Mark"]]
+    try:
+        assert is_equal(result, projection(EMPLOYEES, []))
+    except UnknownAttributeException:
+        return True
+def test_projection_wrong_attributes():
+    """
+    Test projection operation.
+    """
+
+    result = [["Surname", "FirstName"],
+              ["Smith", "Mary"],
+              ["Black", "Lucy"],
+              ["Verdi", "Nico"],
+              ["Smith", "Mark"]]
+    try:
+        assert is_equal(result, projection(EMPLOYEES, ["fat guy"]))
+    except UnknownAttributeException:
+        return True
 def test_cross_product():
     """
     Test cross product operation.
