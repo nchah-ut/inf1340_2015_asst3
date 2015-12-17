@@ -168,10 +168,19 @@ def decide(input_file, countries_file):
     known_countries.append("KAN")  # KAN is not in the list but as the home country should be
     known_countries = json.dumps(known_countries)
 
-    # Incomplete information
+    visa_countries = []
+    for country in countries_json:
+        if countries_json[country]["visitor_visa_required"] == "1":
+            visa_countries.append(country)
+
+    quarantine_countries = []
+    for country in countries_json:
+        if len(countries_json[country]["medical_advisory"]) > 0:
+            quarantine_countries.append(country)
+
     decisions_list = []
     for traveller in input_json:
-        # decisions_list.append(traveller["first_name"])
+        # decisions_list.append(traveller["first_name"])  # for debugging
 
         # Rule 1: If required information for entry record incomplete, traveller is rejected
         completeness_checklist = []
@@ -198,14 +207,27 @@ def decide(input_file, countries_file):
         if traveller["home"]["country"] not in known_countries or traveller["from"]["country"] not in known_countries:
             decisions_list.append("Reject")
 
-
         # Rule 3: If home country is KAN, traveller is accepted
         if traveller["home"]["country"] == "KAN":
             decisions_list.append("Accept")
+
+        # Rule 4: If reason is visit and has passport from country where visa required,
+        # traveller must have valid visa less than 2 years old
+        if traveller["entry_reason"] == "visit" and \
+                traveller["from"]["country"] in visa_countries and \
+                not is_more_than_x_years_ago(2, traveller["visa"]["date"]):
+            decisions_list.append("Accept")
+        else:
+            decisions_list.append("Reject")
+
+        # Rule 5: If coming from or travelling through country with medical advisory, quarantine
+        if traveller["from"]["country"] in quarantine_countries:
+            decisions_list.append("Quarantine")
 
 
     return decisions_list
 
 print decide("test_jsons/test_returning_citizen.json", "countries.json")
+# print decide("valid_visa_example.json", "countries.json")
 
 # print valid_visa_format("CFR6X-XSMVA")
