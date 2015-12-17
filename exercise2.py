@@ -216,20 +216,23 @@ def decide(input_file, countries_file):
 
         # Rule 4: If reason is visit and has passport from country where visa required,
         # traveller must have valid visa less than 2 years old
-        if traveller["entry_reason"] == "visit" \
-                and traveller["from"]["country"] in visa_countries \
-                and not is_more_than_x_years_ago(2, traveller["visa"]["date"]):
-            traveller_decision.append("Accept")
+        try:
+            if traveller["entry_reason"] == "visit" \
+                    and traveller["from"]["country"] in visa_countries \
+                    and not is_more_than_x_years_ago(2, traveller["visa"]["date"]):
+                traveller_decision.append("Accept")
 
-        if traveller["entry_reason"] == "visit" \
-                and traveller["from"]["country"] in visa_countries \
-                and is_more_than_x_years_ago(2, traveller["visa"]["date"]):
-            traveller_decision.append("Reject")
+            if traveller["entry_reason"] == "visit" \
+                    and traveller["from"]["country"] in visa_countries \
+                    and is_more_than_x_years_ago(2, traveller["visa"]["date"])\
+                    or not valid_visa_format(traveller["visa"]["code"]):
+                traveller_decision.append("Reject")
+        except:
+            pass
 
         # Rule 5: If coming from or travelling through country with medical advisory, quarantine
         if traveller["from"]["country"] in quarantine_countries:
             traveller_decision.append("Quarantine")
-
 
         # Aggregate the decisions made across the different rules and apply priority rules
         # print traveller_decision  # for debugging
@@ -244,5 +247,5 @@ def decide(input_file, countries_file):
 
     return decision_list
 
-print decide("test_jsons/exercise2_further_tests.json", "countries.json")
+# print decide("test_jsons/exercise2_further_tests.json", "countries.json")
 # print decide("valid_visa_example.json", "countries.json")
